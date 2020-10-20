@@ -1,0 +1,9 @@
+directorio root de apache
+
+C:\xampp\htdocs
+
+aqui creo los php
+
+despues enciendo apache
+
+y en google pongo http://localhost/prueba.php para abrirlo

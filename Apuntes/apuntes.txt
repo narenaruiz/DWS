@@ -1,0 +1,124 @@
+
+https://www.php.net/manual/es/language.types.string.php
+
+---------------------------------->Pregunta 1:
+
+No entiendo porque un string con numeros y una letra al sumarlo te da la suma sin
+la letra y no te da un error, ademas si sumas un string de numeros con un string de letras
+te da el numero sin las letras, esto lo he probado en el enlace siguiente:
+https://www.w3schools.com/php/phptryit.asp?filename=tryphp_numbers_numeric
+
+Respuesta:
+
+https://www.php.net/manual/es/language.types.string.php
+El valor es dado por la parte inicial del string. Si el string empieza con un dato numérico
+válido, éste será el valor empleado. De lo contrario, el valor será 0 (cero). Un dato numérico
+válido es un signo opcional, seguido de uno o más dígitos (opcionalmente puede contener
+un punto decimal), seguido de un exponente opcional. El exponente es una 'e' o 'E' seguida
+de uno o más dígitos.
+
+<?php
+$foo = 1 + "10.5";                   // $foo es float (11.5)
+$foo = 1 + "-1.3e3";                 // $foo es float (-1299)
+$foo = 1 + "bob-1.3e3";              // $foo es integer (1)
+$foo = 1 + "bob3";                   // $foo es integer (1)
+$foo = 1 + "10 pequeños cerdos";     // $foo es integer (11)
+$foo = 4 + "10.2 pequeños cerditos"; // $foo es float (14.2)
+$foo = "10.0 cerdos " + 1;           // $foo es float (11)
+$foo = "10.0 cerdos " + 1.0;         // $foo es float (11)     
+?>
+
+
+---------------------------------->Pregunta 2:
+
+Cual es el numero maximo que puede usar un integer?
+
+Respuesta:
+
+https://www.php.net/manual/es/language.types.integer.php
+En php el numero maximo que son integer depende de la maquina.
+
+Si PHP encuentra un número fuera de los límites de un integer, se interpretará
+en su lugar como un valor de tipo float. También, una operación cuyo resultado
+sea un número fuera de los límites de un integer devolverá en su lugar un valor
+de tipo float.
+
+
+Desbordamiento de enteros en sistemas de 32 bit
+<?php
+$número_grande = 2147483647;
+var_dump($número_grande);                    // int(2147483647)
+
+$número_grande = 2147483648;
+var_dump($número_grande);                    // float(2147483648)
+
+$millón = 1000000;
+$número_grande =  50000 * $millón;
+var_dump($número_grande);                    // float(50000000000)
+?>
+
+
+Desbordamiento de enteros en sistemas de 64 bit
+<?php
+$número_grande = 9223372036854775807;
+var_dump($número_grande);                    // int(9223372036854775807)
+
+$número_grande = 9223372036854775808;
+var_dump($número_grande);                    // float(9.2233720368548E+18)
+
+$millón = 1000000;
+$número_grande =  50000000000000 * $millón;
+var_dump($número_grande);                    // float(5.0E+19)
+?>
+
+
+
+---------------------------------->Pregunta 3:
+
+Revisar lo del enlace que no lo entiendo bien
+https://www.w3schools.com/php/phptryit.asp?filename=tryphp_datatypes_object
+
+
+Respuesta: Todavia pendiente
+
+
+
+---------------------------------->Informacion:
+
+Tiempo tardado mirando php en w3schools
+
+---------->HORA:MINUTO:SEGUNDO
+PHP syntax. --> 00:10:25
+PHP Comments --> 00:01:13
+PHP Variables --> 00:26:11
+PHP Echo/print --> 00:13:58
+PHP Data Types --> 00:29:31
+PHP Strings --> 00:16:52
+PHP Numbers --> 00:59:41
+PHP Maths --> 00:12:54
+PHP Constants --> 00:08:21
+PHP Operators --> 00:25:35
+PHP If .. Else .. Elseif. --> 00:04:09
+PHP Switch --> 00:03:32
+PHP Loops --> 00:16:12
+PHP Function --> 00:12:48
+PHP Array --> 00:22:55
+PHP Superglobals --> 00:07:02
+
+
+---------------------------------->Teoria:
+
+Al poner esto hacemos que las variables sean estrictas y por lo tanto haya que definirlas:
+
+<?php declare("strict types=1");
+
+Con mixed [string var(mixed variable)] puedes usar tanto variables definidas como las dinamicas.
+
+Recomendacion: Poner todos los nombres de variables en minusculas y separacion de nombres con guion bajo.
+
+Conversion de tipos: (int)$var --> lo transformas a un int
+
+En php.ini estan todas las directivas y te pone que hacen.
+En php.ini puedes editar el error_reporting E_ALL para que te enseñe todos los errores y display_errors on para activarlo
+La carpeta la puedes ver en xamp/php/ --> se supone que hay dos que son algo.ini
+
