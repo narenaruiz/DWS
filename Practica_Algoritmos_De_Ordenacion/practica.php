@@ -6,7 +6,11 @@
 if(isset($_POST['envioFormulario'])) {
 
     //Recoger los dos valores de los radio buttons
-    $opcionAlgoritmo = $_POST['opcionAlgoritmo'];
+    /**
+     * Esto lo he quitado provisionalmente por ahora
+     * 
+     * $opcionAlgoritmo = $_POST['opcionAlgoritmo'];
+     * */
     $tipoArray = $_POST['tipoArray'];
 
     /**
@@ -22,6 +26,7 @@ if(isset($_POST['envioFormulario'])) {
     function busquedaBinaria($lista, $numeroBuscado) {
         $indiceAlto = count($lista);
         $indiceBajo = 0;
+        $result = "Por algun motivo falla";
         
         $numeroEncontrado = false;
         while (!$numeroEncontrado) {
@@ -33,6 +38,8 @@ if(isset($_POST['envioFormulario'])) {
             } else if ($lista[$centro] == $numeroBuscado) {
                 $result = "El numero ha sido encontrado es " . $numeroBuscado . " y esta en la posicion " . $centro . " de la lista.";
                 $numeroEncontrado = true;
+            } else {
+                $result = "Error en la busqueda binaria";
             }
             /*
             No funciona, he probado de poner el while de otra
@@ -153,6 +160,22 @@ if(isset($_POST['envioFormulario'])) {
         return $lista;
     }
 
+    function crearListaUsuario() {
+        /**
+         * Recogemos el string que envia el formulario para
+         * despues guardar los numeros en el array poniendo
+         * que los recoga teniendo en cuenta el espacio como separacion
+        */
+        $numUser = $_POST['numUser'];
+        /** 
+         * El explode funciona poniendo el separador y luego el
+         * string, asi: explode( string $delimiter , string $string)
+         * Parece que hay que usar explode en vez de split
+        */
+        $lista = explode(" ", $numUser);
+        return $lista;
+    }
+
     $resultadoFinal = "";
     /**
      * El switch recibe el id de los que tienen el name tipoArray el
@@ -177,28 +200,20 @@ switch($tipoArray){
         $resultadoFinal = opcionListaPredeterminadaIntercambio();
         break;
     case "arrayRandomBurbuja":
-        //Opcion de burbuja pero con una funcion que te dara una lista desordenada
+        //Opcion de burbuja pero con una funcion que te dara una lista aleatoria
         $resultadoFinal = burbuja(crearListaRandom());
         break;
     case "arrayRandomIntercambio":
-        //Opcion de intercambio pero con una funcion que te dara una lista desordenada
+        //Opcion de intercambio pero con una funcion que te dara una lista aleatoria
         $resultadoFinal = intercambio(crearListaRandom());
         break;
-    case "arrayUsuario":
-        /**
-         * Recogemos el string que envia el formulario para
-         * despues guardar los numeros en el array poniendo
-         * que los recoga teniendo en cuenta el espacio como separacion
-        */
-        $numUser = $_POST['numUser'];
-        /** 
-         * El explode funciona poniendo el separador y luego el
-         * string, asi: explode( string $delimiter , string $string)
-         * Parece que hay que usar explode en vez de split
-        */
-        $lista = explode(" ", $numUser);
-
-        $resultadoFinal = burbuja($lista);
+    case "arrayUsuarioBurbuja":
+        //Opcion de burbuja pero con una funcion en la que el usuario te dara una lista escrita por el
+        $resultadoFinal = burbuja(crearListaUsuario());
+        break;
+    case "arrayUsuarioIntercambio":
+        //Opcion de intercambio pero con una funcion en la que el usuario te dara una lista escrita por el
+        $resultadoFinal = intercambio(crearListaUsuario());
         break;
     case "insertarArchivo":
         //Guardamos el archivo insertado en una variable
@@ -208,7 +223,7 @@ switch($tipoArray){
          * Habia pensado en separar los numeros con explode
          * pero no se si aqui se podria hacer.
          */
-        echo "Esta opcion no se como hacerla";
+        $resultadoFinal = "Esta opcion no se como hacerla";
         break;
     }
 }
@@ -237,25 +252,38 @@ switch($tipoArray){
         <br>
 
         -->
-        <label>Opcion de algoritmo y tipo de lista:</label>
+        <h1>Opcion de algoritmo y tipo de lista:</h1>
+        <input type="radio" name="tipoArray" id="arrayPredBinario" value="arrayPredBinario">
+		<label for="arrayPredBinario">Matriz predeterminada: binario: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10<label>
         <br>
-        <input type="radio" name="tipoArray" id="arrayPredBinario" value="arrayPredBinario" checked>
-		<label for="arrayPredBinario">Matriz predeterminada para binario: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 - Di que numero quieres buscar:<label>
+        <label for="arrayPredBinario">_______Di que numero quieres buscar:</label>
         <input type="number" name="numSearch" value = "2">
         <br>
         <input type="radio" name="tipoArray" id="arrayPredBurbuja" value="arrayPredBurbuja">
-		<label for="arrayPredBurbuja">Matriz predeterminada para burbuja: 4, 7, 5, 10, 6, 2, 8, 3, 1, 9<label>
+		<label for="arrayPredBurbuja">Matriz predeterminada: burbuja: 4, 7, 5, 10, 6, 2, 8, 3, 1, 9<label>
         <br>
         <input type="radio" name="tipoArray" id="arrayPredIntercambio" value="arrayPredIntercambio">
-		<label for="arrayPredIntercambio">Matriz predeterminada para intercambio: 6, 4, 7, 2, 9, 3, 10, 5, 1, 8<label>
+		<label for="arrayPredIntercambio">Matriz predeterminada: intercambio: 6, 4, 7, 2, 9, 3, 10, 5, 1, 8<label>
         <br>
 		<input type="radio" name="tipoArray" id="arrayRandomBurbuja" value="arrayRandomBurbuja">
-		<label for="arrayRandomBurbuja">Di la longitud del array aleatorio que quieres crear para la burbuja:</label>
-        <input type="number" name="numerosRandom" value="10">
+		<label for="arrayRandomBurbuja">Array aleatorio: burbuja.</label>
         <br>
-        <input type="radio" name="tipoArray" id="arrayUsuario" value="arrayUsuario">
-		<label for="arrayUsuario">Introduce los valores desordenados para el algoritmo burbuja</label>
-        <input type="text" name="numUser" placeholder="ej. 4, 7, 5, 10, 6, 2, 8, 3, 1, 9">
+        <input type="radio" name="tipoArray" id="arrayRandomIntercambio" value="arrayRandomIntercambio">
+		<label for="arrayRandomIntercambio">Array aleatorio: intercambio.</label>
+        <br>
+        <!-- Esto sirve tanto para el de intercambio como el de burbuja -->
+        <label for="arrayRandomBurbuja">_______En caso de querer un array aleatorio poner aqui la cantidad de numeros:</label>
+        <input type="number" name="numerosRandom" value="5">
+        <br>
+        <input type="radio" name="tipoArray" id="arrayUsuarioBurbuja" value="arrayUsuarioBurbuja">
+		<label for="arrayUsuarioBurbuja">Array de usuario: burbuja</label>
+        <br>
+        <input type="radio" name="tipoArray" id="arrayUsuarioIntercambio" value="arrayUsuarioIntercambio">
+		<label for="arrayUsuarioIntercambio">Array de usuario: intercambio</label>
+        <br>
+        <!-- Esto sirve tanto para el de intercambio como el de burbuja -->
+        <label for="arrayUsuarioBurbuja">_______En caso de querer un array de usuario poner aqui los valores desordenados separados por espacios</label>
+        <input type="text" name="numUser" placeholder="ej. 6 7 3 5 1 8">
         <br>
         <input type="radio" name="tipoArray" id="insertarArchivo" value="insertarArchivo">
         <label for="insertarArchivo">Introduce el archivo(txt, json, xml, etc):</label>
@@ -264,10 +292,12 @@ switch($tipoArray){
         <br>
         <input type="submit" name="envioFormulario" value="Enviar" />
         <br>
+        <br>
+        <h2>Resultado:</h2>
     </form>
     <section>
     <?php if($resultadoFinal != "") {
-        echo "<h2>" . $resultadoFinal . "</h2>";
+        echo "<h3>" . $resultadoFinal . "</h3>";
     }
     ?>
     </section>
