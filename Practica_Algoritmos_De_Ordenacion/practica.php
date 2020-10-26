@@ -19,7 +19,7 @@ if(isset($_POST['envioFormulario'])) {
      * proporcionado por el usuario
      */
     function busquedaBinaria($lista, $numeroBuscado){
-        $indiceAlto = count($lista) - 1;
+        $indiceAlto = count($lista);
         $indiceBajo = 0;
         
         $numeroEncontrado = false;
