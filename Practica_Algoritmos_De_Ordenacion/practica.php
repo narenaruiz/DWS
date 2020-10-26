@@ -144,6 +144,7 @@ switch($tipoArray){
          */
         echo "Esta opcion no se como hacerla";
         break;
+    }
 }
 ?>
 <!DOCTYPE html>
