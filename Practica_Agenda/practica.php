@@ -21,9 +21,7 @@
         <br>
         <?php
             /**
-             * $agenda = array_merge($agenda, $aux); te combina los array que pongas
-             * parse_str(string de entrada , array donde se guarda) vuelve el string en array
-             * http_build_query vuelve el array a string
+             * @author Nicolás Arena Ruiz <narena@cifpfbmoll.eu>
              */
 
             /**
@@ -79,6 +77,9 @@
                 if (empty($_POST['nameUser'])) {
                     echo "<h3>El nombre no ha sido introducido</h3>";
                 }
+                /**
+                 * Te imprime los datos
+                 */
                 echo "<h2>Datos Guardados</h2>";
                 echo "<ul>";
                 foreach($lista as $name => $tel) {
