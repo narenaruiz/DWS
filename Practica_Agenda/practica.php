@@ -22,58 +22,71 @@
         <?php
             /**
              * @author Nicolás Arena Ruiz <narena@cifpfbmoll.eu>
+             * @version 1.0.4
              */
 
             /**
-             * Lo que hago es guardar los primeros datos en lista y despues
-             * lo transformo en un url con la funcion de
-             * http_build_query y lo guardo en el input para que cuando recargue la pagina
-             * no desaparezca. En la siguiente pasada lo que he hecho es
-             * transformar lo del input hidden en un array otra vez y lo vuelvo a poner
-             * en lista, entonces guardo los datos introducidos en otra variable, no
-             * uso lista porque tiene los datos guardados de la anterior vuelta,
-             * y ahora lo que hago es juntar los datos antiguos y los nuevos
-             * con el array_merge. Finalmente volvemos a tranformar el array de lista
-             * en un url y si queremos imprimir los datos seria con
-             * lista(que es un array asociativo) la cual conserva los datos hasta que
-             * envies nuevos y se cambien.
+             * Cuando el input hidden este vacio (cuando cargas la pagina y no has
+             * enviado nada todavia) entonces se te ejecutara este if en el cual te
+             * inicializa la lista ($lista) donde guardaras todos los datos.
+             * El else se activara con lo contrario al if y lo que te hara sera
+             * que te transforma el string de guardar (es una url) en un array que
+             * te guardara en $lista y luego crea un nuevo array ($newValue),
+             * despues habra algunas condiciones para ejecutar cierto codigo
+             * 
+             * @var lista variable del primer if, contiene un metodo el cual hace que sea un array
+             * @var newValue variable del else, contiene un metodo el cual hace que sea un array
+             * @method array() metodo en la primera y segunda variable, te contruye el array
+             * @method parse_str() metodo usado en el else, transforma un string en un array, en
+             * este caso es lo que hay guardado en el input hidden lo que vuelve un array y lo guarda
+             * en la array $lista
              */
             if (!isset($_POST['guardar'])) {
-                //Cuando el input hidden este vacio entonces se ejecuta esto.
-                //Esta vacio el array porque en un inicio la pagina esta vacia
+                //Esta vacio el array porque en un inicio los datos estan vacios
                 $lista = array();
             } else {
+                //El parse_str te vuelve el string que esta en guardar en un array que te guarda en lista
                 parse_str($_POST['guardar'], $lista);
                 $newValue = array();
                 /**
-                 * Esto me guardara los datos cuando ninguno de los que te ponga el usuario este vacio
+                 * En caso de que el nombre y el telefono hayan sido escritos guardara
+                 * estos dos datos en la array construida anteriormente ($newValue)
                  */
                 if(!empty($_POST['nameUser']) && !empty($_POST['telUser'])) {
                     $newValue = array($_POST['nameUser'] => $_POST['telUser']);
                 }
                 /**
-                 * Cuando el telefono esta vacio y el nombre no entonces te borra
+                 * Cuando el telefono esta vacio y el nombre no esta vacio entonces te borra
                  * de la lista la clave que tenga el mismo nombre y te borra su
                  * valor tambien.
                  */
                 if (empty($_POST['telUser']) && !empty($_POST['nameUser'])) {
                     unset($lista[$_POST['nameUser']]);
                 }
-                //sobrescribo la variable guardando lo suyo mas lo otro
+                /**
+                 * sobrescribo la variable guardando lo suyo mas lo otro
+                 */
                 $lista = array_merge($lista, $newValue);
             }
 
+            /**
+             * Te transforma el array ($lista) en un url
+             */
             if (isset($lista)) {
                 $listatxt = http_build_query($lista);
             }
 
             /**
-             * Creo un input hidden el cual es un input pero que no se ve y en un inicio esta vacio
+             * Creo un input hidden el cual es un input pero que no se ve
+             * y en un inicio esta vacio
              */
             echo '<input type="hidden" name="guardar" id="guardar" value="'.$listatxt.'">';
                 
             if (isset($_POST['envioFormulario'])) {
-                //Esta condicion hace que salga un mensaje en caso de que no introduzcas el nombre
+                /**
+                 * Esta condicion hace que salga un mensaje en caso de que
+                 * no introduzcas el nombre
+                 */
                 if (empty($_POST['nameUser'])) {
                     echo "<h3>El nombre no ha sido introducido</h3>";
                 }
