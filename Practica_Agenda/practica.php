@@ -40,6 +40,7 @@
              * @method parse_str() metodo usado en el else, transforma un string en un array, en
              * este caso es lo que hay guardado en el input hidden lo que vuelve un array y lo guarda
              * en la array $lista
+             * @link parse_str: https://www.php.net/manual/es/function.parse-str.php
              */
             if (!isset($_POST['guardar'])) {
                 //Esta vacio el array porque en un inicio los datos estan vacios
@@ -59,6 +60,7 @@
                  * Cuando el telefono esta vacio y el nombre no esta vacio entonces te borra
                  * de la lista la clave que tenga el mismo nombre y te borra su
                  * valor tambien.
+                 * @link unset: https://www.php.net/manual/es/function.unset.php
                  */
                 if (empty($_POST['telUser']) && !empty($_POST['nameUser'])) {
                     unset($lista[$_POST['nameUser']]);
@@ -71,6 +73,7 @@
 
             /**
              * Te transforma el array ($lista) en un url
+             * @link http_build_query: https://www.php.net/manual/es/function.http-build-query.php
              */
             if (isset($lista)) {
                 $listatxt = http_build_query($lista);
