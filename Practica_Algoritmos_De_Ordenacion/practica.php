@@ -1,4 +1,5 @@
 <?php
+$resultadoFinal = "";
 /**
  * Si hemos enviado el formulario entonces se ejecutara
  * lo del if si no entonces simplemente saldra el html
@@ -39,17 +40,9 @@ if(isset($_POST['envioFormulario'])) {
                 $result = "El numero ha sido encontrado es " . $numeroBuscado . " y esta en la posicion " . $centro . " de la lista.";
                 $numeroEncontrado = true;
             } else {
-                $result = "Error en la busqueda binaria";
-            }
-            /*
-            No funciona, he probado de poner el while de otra
-            forma y esto separado junto con el otro mensaje
-            en unos if pero no funciona asi que lo dejo asi:
-            else {
-                echo "El numero " . $numeroBuscado . " no esta en la lista";
+                $result = "El numero no esta en la lista";
                 $numeroEncontrado = true;
             }
-            */
         return $result;
         }
     }
@@ -73,7 +66,7 @@ if(isset($_POST['envioFormulario'])) {
             }
         }
         /**
-         * Hago la variable resultadoFinal a la que le pongo un texto
+         * Hago la variable result a la que le pongo un texto
          * y luego le voy poniendo los distintos numeros
          */
         $result = "La array ordenada queda asi:";
@@ -176,7 +169,25 @@ if(isset($_POST['envioFormulario'])) {
         return $lista;
     }
 
-    $resultadoFinal = "";
+    function crearListaArchivo() {
+        /*
+         * Aqui realizo las cosas para el archivo
+         * 
+         * @link como interactuar con un fichero en php: https://www.youtube.com/watch?v=MJ3ApW1Rb-U
+        */
+        //Guardamos el archivo insertado en una variable
+        $archivo = $_POST['archivo'];
+        $lista = array();
+        //El fopen lo que hace es crear una conexion por eso luego hay que cerrarla
+        $fp = fopen('test.bin','rb');
+        while(!feof($fp)) {
+        $c = fgetc($fp);
+        if($c === false) break;
+        // ... do something with $c
+    }
+        return $lista;
+    }
+
     /**
      * El switch recibe el id de los que tienen el name tipoArray el
      * cual se ha guardado en la variable con el mismo nombre
@@ -184,7 +195,7 @@ if(isset($_POST['envioFormulario'])) {
      * @param tipoArray es la variable que tiene guardado el id que
      * dentro del switch se comparara con los distintos case
      */
-switch($tipoArray){
+switch($tipoArray) {
     case "arrayPredBinario":
         //Guardamos el valor enviado en el formulario
         $numeroBuscado = $_POST['numSearch'];
@@ -215,15 +226,11 @@ switch($tipoArray){
         //Opcion de intercambio pero con una funcion en la que el usuario te dara una lista escrita por el
         $resultadoFinal = intercambio(crearListaUsuario());
         break;
-    case "insertarArchivo":
-        //Guardamos el archivo insertado en una variable
-        $archivo = $_POST['archivo'];
-        $lista = array();
-        /**
-         * Habia pensado en separar los numeros con explode
-         * pero no se si aqui se podria hacer.
-         */
-        $resultadoFinal = "Esta opcion no se como hacerla";
+    case "insertarArchivoBurbuja":
+        $resultadoFinal = burbuja(crearListaArchivo());
+        break;
+    case "insertarArchivoIntercambio":
+        $resultadoFinal = intercambio(crearListaArchivo());
         break;
     }
 }
@@ -236,24 +243,10 @@ switch($tipoArray){
     <title>Practica Algoritmos</title>
 </head>
 <body>
-    <form action="practica.php" method="post">
-    <!-- 
-        Creo que esto sobra y que las opciones de abajo ya sirve
-        para lo que quiera hacer el usuario:
-
-        <label>Elegir el tipo de Algoritmo:</label>
-        <br>
-        <input type="radio" name="opcionAlgoritmo" id="algoritmoBinario" value="Binario" checked>
-        <label for="algoritmoBinario">Binario</label>
-        <br>
-        <input type="radio" name="opcionAlgoritmo" id="algoritmoBurbuja" value="Burbuja">
-        <label for="algoritmoBurbuja">Burbuja</label>
-        <br>
-        <br>
-
-        -->
+    <form method="post">
         <h1>Opcion de algoritmo y tipo de lista:</h1>
-        <input type="radio" name="tipoArray" id="arrayPredBinario" value="arrayPredBinario">
+        <!-- Opciones de lista predeterminada -->
+        <input type="radio" name="tipoArray" id="arrayPredBinario" value="arrayPredBinario" checked>
 		<label for="arrayPredBinario">Matriz predeterminada: binario: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10<label>
         <br>
         <label for="arrayPredBinario">_______Di que numero quieres buscar:</label>
@@ -265,6 +258,7 @@ switch($tipoArray){
         <input type="radio" name="tipoArray" id="arrayPredIntercambio" value="arrayPredIntercambio">
 		<label for="arrayPredIntercambio">Matriz predeterminada: intercambio: 6, 4, 7, 2, 9, 3, 10, 5, 1, 8<label>
         <br>
+        <!-- Opciones de lista aleatoria -->
 		<input type="radio" name="tipoArray" id="arrayRandomBurbuja" value="arrayRandomBurbuja">
 		<label for="arrayRandomBurbuja">Array aleatorio: burbuja.</label>
         <br>
@@ -275,6 +269,7 @@ switch($tipoArray){
         <label for="arrayRandomBurbuja">_______En caso de querer un array aleatorio poner aqui la cantidad de numeros:</label>
         <input type="number" name="numerosRandom" value="5">
         <br>
+        <!-- Opciones de lista escrita por el usuario -->
         <input type="radio" name="tipoArray" id="arrayUsuarioBurbuja" value="arrayUsuarioBurbuja">
 		<label for="arrayUsuarioBurbuja">Array de usuario: burbuja</label>
         <br>
@@ -285,8 +280,15 @@ switch($tipoArray){
         <label for="arrayUsuarioBurbuja">_______En caso de querer un array de usuario poner aqui los valores desordenados separados por espacios</label>
         <input type="text" name="numUser" placeholder="ej. 6 7 3 5 1 8">
         <br>
-        <input type="radio" name="tipoArray" id="insertarArchivo" value="insertarArchivo">
-        <label for="insertarArchivo">Introduce el archivo(txt, json, xml, etc):</label>
+        <!-- Opciones de lista construida con la informacion de una archivo -->
+        <input type="radio" name="tipoArray" id="insertarArchivoBurbuja" value="insertarArchivoBurbuja">
+        <label for="insertarArchivoBurbuja">Archivo para burbuja:</label>
+        <br>
+        <input type="radio" name="tipoArray" id="insertarArchivoIntercambio" value="insertarArchivoIntercambio">
+        <label for="insertarArchivoIntercambio">Archivo para intercambio:</label>
+        <br>
+        <!-- Esto sirve tanto para el de intercambio como el de burbuja -->
+        <label for="insertarArchivoBurbuja">_______Introduce el archivo(txt, json, xml, etc):</label>
         <input type="file" name="archivo">
         <br>
         <br>
@@ -295,11 +297,11 @@ switch($tipoArray){
         <br>
         <h2>Resultado:</h2>
     </form>
-    <section>
+    <div>
     <?php if($resultadoFinal != "") {
         echo "<h3>" . $resultadoFinal . "</h3>";
     }
     ?>
-    </section>
+    </div>
 </body>
 </html>
