@@ -5,8 +5,6 @@
      */
     //inicio la sesion
     session_start();
-    $_SESSION["nombre"] = $_POST['nameUser'];
-    $_SESSION["telefono"] = $_POST['telUser'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -17,7 +15,7 @@
 </head>
 <body>
 <!-- Es un formulario con el que pediras los datos -->
-    <form action="practicaAgendaPrueba.php" method="post">
+    <form method="post">
         <h1>Datos de la Agenda:</h1>
         <br>
         <label for="nombre">Nombre:</label>
@@ -30,7 +28,17 @@
         <input type="submit" name="envioFormulario" value="Enviar" />
         <br>
         <?php
-        echo "Nombre de Usuario: " . $_SESSION["nombre"] . "| telefono: " . $_SESSION["telefono"];
+        //Guardo en session con la id que es el nombre y su valor sera el telefono
+            $_SESSION[$_POST['nameUser']] = $_POST['telUser'];
+            if (isset($_POST['envioFormulario'])) {
+                //Te imprime los datos
+                echo "<h2>Datos Guardados</h2>";
+                echo "<ul>";
+                foreach($_SESSION as $name => $tel) {
+                    echo "<li>" . $name . " => " . $tel ."</li>";
+                }
+                echo "</ul>";
+            }
         ?>
     </form>
 </body>
