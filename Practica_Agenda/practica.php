@@ -7,7 +7,7 @@
 </head>
 <body>
 <!-- Es un formulario con el que pediras los datos -->
-    <form action="practicaAgendaPrueba.php" method="post">
+    <form action="practica.php" method="post">
         <h1>Datos de la Agenda:</h1>
         <br>
         <label for="nombre">Nombre:</label>
