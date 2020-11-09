@@ -3,7 +3,10 @@
      * @author Nicolás Arena Ruiz <narena@cifpfbmoll.eu>
      * @version 1.0.0
      */
+    //inicio la sesion
     session_start();
+    $_SESSION["nombre"] = $_POST['nameUser'];
+    $_SESSION["telefono"] = $_POST['telUser'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -27,7 +30,7 @@
         <input type="submit" name="envioFormulario" value="Enviar" />
         <br>
         <?php
-            
+        echo "Nombre de Usuario: " . $_SESSION["nombre"] . "| telefono: " . $_SESSION["telefono"];
         ?>
     </form>
 </body>
