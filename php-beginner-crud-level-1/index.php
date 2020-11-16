@@ -32,7 +32,16 @@
             // include database connection
             include 'config/database.php';
 
-            // delete message prompt will be here
+            // delete message prompt
+            // apartado 9.1
+            $action = isset($_GET['action']) ? $_GET['action'] : "";
+            
+            //if it was redirected from delete.php
+            if($action=='deleted'){
+                echo "<div class='alert alert-success'>Record was deleted.</div>";
+            }
+            // -----fin 9.1-------
+
             // select all data
             $query = "SELECT id, name, description, price FROM products ORDER BY id DESC";
             $stmt = $con->prepare($query);
@@ -104,6 +113,19 @@
         <!-- Latest compiled and minified Bootstrap JavaScript -->
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-        <!-- confirm delete record will be here -->
+        <!-- confirm delete record 
+        apartado 9.2
+        -->
+        <script type='text/javascript'>
+            // confirm record deletion
+            function delete_user(id){
+                var answer = confirm('Are you sure');
+                if(answer){
+                    // if user clicked ok,
+                    // pass the id to delete.php and execute the delete query
+                    window.location = 'delete.php?id=' + id;
+                }
+            }
+        </script>
     </body>
 </html>
