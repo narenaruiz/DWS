@@ -31,6 +31,19 @@
             <?php
             // include database connection
             include 'config/database.php';
+            
+            // apartado 10.1
+            // PAGINATION VARIABLES
+            // page is the current page, if there's nothing set, default is page 1
+            $page = isset($_GET['page']) ? $_GET['page'] : 1;
+            
+            // set records or rows of data per page
+            $records_per_page = 5;
+            
+            // calculate for the query LIMIT clause
+            $from_record_num = ($records_per_page * $page) - $records_per_page;
+            
+            //-----Fin apartado 10.1-----
 
             // delete message prompt
             // apartado 9.1
@@ -42,11 +55,23 @@
             }
             // -----fin 9.1-------
 
+            // editado por apartado 10.2
             // select all data
-            $query = "SELECT id, name, description, price FROM products ORDER BY id DESC";
-            $stmt = $con->prepare($query);
-            $stmt->execute();
+            //$query = "SELECT id, name, description, price FROM products ORDER BY id DESC";
+            //$stmt = $con->prepare($query);
+            //$stmt->execute();
 
+            // select data for current page
+            $query = "SELECT id, name, description, price FROM products ORDER BY id DESC"
+                    . " LIMIT :from_record_num, :records_per_page";
+            
+            $stmt = $con->prepare($query);
+            $stmt->bindParam(":from_record_num", $from_record_num, PDO::PARAM_INT);
+            $stmt->bindParam(":records_per_page", $records_per_page, PDO::PARAM_INT);
+            $stmt->execute();
+            
+            //-----Fin 10.2--------
+            
             // this is how to get number of rows returned
             $num = $stmt->rowCount();
 
@@ -97,6 +122,29 @@
                 
             // end table
             echo "</table>";
+            
+            // apartado 10.3 creo que va aqui
+            // PAGINATION
+            // count total number of rows
+            $query = "SELECT COUNT(*) as total_rows FROM products";
+            $stmt = $con->prepare($query);
+            
+            // execute query
+            $stmt->execute();
+            
+            // get total rows
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            $total_rows = $row['total_rows'];
+            
+            //-------Fin 10.3------
+            
+            // apartado 10.4
+            // paginate records
+            $page_url="index.php?";
+            include_once "paging.php";
+            
+            //-----Fin 10.4---------
+            
             }
 
             // if no records found
