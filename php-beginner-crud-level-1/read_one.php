@@ -33,7 +33,13 @@ the MySQL database -->
             // read current record's data
             try{
                 //prepare select query
+                /*
+                 * cambio por el 12.1
                 $query = "SELECT id, name, description, price FROM products WHERE id = ? LIMIT 0,1";
+                 */
+                // apartado 12.1
+                $query = "SELECT id, name, description, price, image FROM products WHERE id = ? LIMIT 0,1";
+                //--- Fin 12.1 ----
                 $stmt = $con->prepare($query);
                 
                 // this is the first question mark
@@ -49,6 +55,9 @@ the MySQL database -->
                 $name = $row['name'];
                 $description = $row['description'];
                 $price = $row['price'];
+                // apartado 12.1
+                $image = htmlspecialchars($row['image'], ENT_QUOTES);
+                //---- Fin apartado 12.1 ----
             }
             
             // show error
@@ -72,6 +81,14 @@ the MySQL database -->
                     <td>Price</td>
                     <td><?php echo htmlspecialchars($price, ENT_QUOTES); ?></td>
                 </tr>
+                <!-- apartado 12.2 -->
+                <tr>
+                    <td>Image</td>
+                    <td>
+                    <?php echo $image ? "<img src='uploads/{$image}' style='width:300px;' />" : "No image found.";  ?>
+                    </td>
+                </tr>
+                <!-- Fin apartado 12.2 -->
                 <tr>
                     <td></td>
                     <td>
