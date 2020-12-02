@@ -1,8 +1,11 @@
+<!-- Apartado 7.11 -->
 <?php
+// core configuration
+include_once "config/core.php";
 
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
+// destroy session, it will remove ALL session settings
+session_destroy();
+ 
+//redirect to login page
+header("Location: {$home_url}login.php");
+?>
