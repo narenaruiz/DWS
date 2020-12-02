@@ -360,4 +360,34 @@ class User {
     }
 
     //------ Fin apartado 12.6 ------
+    // Apartado 13.5
+    // used in forgot password feature
+    function updatePassword() {
+
+        // update query
+        $query = "UPDATE " . $this->table_name . "
+			SET password = :password
+			WHERE access_code = :access_code";
+
+        // prepare the query
+        $stmt = $this->conn->prepare($query);
+
+        // sanitize
+        $this->password = htmlspecialchars(strip_tags($this->password));
+        $this->access_code = htmlspecialchars(strip_tags($this->access_code));
+
+        // bind the values from the form
+        $password_hash = password_hash($this->password, PASSWORD_BCRYPT);
+        $stmt->bindParam(':password', $password_hash);
+        $stmt->bindParam(':access_code', $this->access_code);
+
+        // execute the query
+        if ($stmt->execute()) {
+            return true;
+        }
+
+        return false;
+    }
+
+    //----- Fin apartado 13.5 -----
 }
