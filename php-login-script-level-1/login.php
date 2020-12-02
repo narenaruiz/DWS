@@ -121,6 +121,11 @@ echo "<div class='col-sm-6 col-md-4 col-md-offset-4'>";
 					echo "<input type='text' name='email' class='form-control' placeholder='Email' required autofocus />";
 					echo "<input type='password' name='password' class='form-control' placeholder='Password' required />";
 					echo "<input type='submit' class='btn btn-lg btn-primary btn-block' value='Log In' />";
+                                        // Apartado 12.1
+                                        echo "<div class='margin-1em-zero text-align-center'>
+                                        <a href='{$home_url}forgot_password'>Forgot password?</a>
+                                        </div>";
+                                        // -----Fin apartado 12.1 ----
 				echo "</form>";
 			echo "</div>";
 		echo "</div>";
