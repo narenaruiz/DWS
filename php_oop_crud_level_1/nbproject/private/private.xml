@@ -4,11 +4,8 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/xampp/htdocs/php_oop_crud_level_1/create_product.php</file>
+            <file>file:/C:/xampp/htdocs/php_oop_crud_level_1/read_one.php</file>
             <file>file:/C:/xampp/htdocs/php_oop_crud_level_1/objects/product.php</file>
-            <file>file:/C:/xampp/htdocs/php_oop_crud_level_1/objects/category.php</file>
-            <file>file:/C:/xampp/htdocs/php_oop_crud_level_1/config/database.php</file>
-            <file>file:/C:/xampp/htdocs/php_oop_crud_level_1/index.php</file>
-            <file>file:/C:/xampp/htdocs/php_oop_crud_level_1/paging.php</file>
         </group>
     </open-files>
 </project-private>
