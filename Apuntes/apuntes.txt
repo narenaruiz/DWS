@@ -33,7 +33,38 @@ $foo = "10.0 cerdos " + 1.0;         // $foo es float (11)
 
 Cual es el numero maximo que puede usar un integer?
 
-Respuesta:
+
+Respuesta 1:
+
+
+El tamaño de un entero depende de la plataforma, aunque un valor máximo
+de aproximadamente dos mil millones es el valor habitual (es decir, 32 bits
+firmados). PHP no admite enteros sin signo. El tamaño entero se puede
+determinar usando la constante PHP_INT_SIZE, y el valor máximo usando la
+constante PHP_INT_MAX desde PHP 4.4.0 y PHP 5.0.5.
+
+Las plataformas de 64 bits generalmente tienen un valor máximo de
+aproximadamente 9E18, excepto en Windows anterior a PHP 7, donde
+siempre fue de 32 bits.
+
+
+<!DOCTYPE html>
+<html>
+<body>
+
+<?php  
+echo PHP_INT_SIZE;
+echo "<br>";
+echo PHP_INT_MAX;
+?>  
+
+</body>
+</html>
+
+
+
+
+Respuesta 2:
 
 https://www.php.net/manual/es/language.types.integer.php
 En php el numero maximo que son integer depende de la maquina.
@@ -79,11 +110,226 @@ Revisar lo del enlace que no lo entiendo bien
 https://www.w3schools.com/php/phptryit.asp?filename=tryphp_datatypes_object
 
 
-Respuesta: Todavia pendiente
+Respuesta: Respuesta respondida por mi
+Es una clase que seria del temario de orientado a objetos. Lo que
+hace es crear un objeto coche y envia las caracteristicas al constructor
+el cual las une a los campos de la clase y de esa forma creas un objeto.
 
 
 
----------------------------------->Informacion:
+---------------------------------->Pregunta 4:
+
+Una interfaz con dos metodos que se llaman iguales cual usa.
+
+
+Respuesta:
+
+https://www.php.net/manual/es/language.oop5.interfaces.php
+No usa ninguno porque no se pueden declarar dos metodos con el mismo nombre, saldra un error:
+Fatal error: Cannot redeclare a::prueba() in C:\xampp\htdocs\probandoCodigos\index.php on line 7
+La prueba que he ejecutado es:
+<?php
+
+interface a {
+
+    public function prueba();
+
+    public function prueba($param);
+}
+
+class b implements prueba {
+    public function __construct($arg=null)
+    {
+        print_r(func_get_args());
+    }
+    public function __construct($arg=null)
+    {
+        echo "Segundo Metodo";
+    }
+}
+
+$prueba = new b(123);
+?>
+
+
+
+
+---------------------------------->Pregunta 5:
+
+Traits: hay que comporobar en el caso de que tengan un parametro o nombre igual cual prevalece.
+
+
+Respuesta:
+
+Mirar mejor la pagina:
+http://programandolo.blogspot.com/2013/08/php-orientado-objetos-herencia-multiple.html
+
+PHP resuelve la situación dando mayor precedencia al método de la clase actual
+que al método de un 'trait'. Independientemente de la visibilidad. Si ambas
+estructuras tienen un método llamado igual, PHP elige al de la clase.
+
+trait MiTrait{  
+   private function MiMetodo(){  
+     echo "este es un método de MiTrait";  
+   }  
+ }  
+ class MiClase{  
+   use MiTrait;  
+   public function MiMetodo(){  
+     echo "este es un método de MiClase";  
+   }  
+ }  
+ $c = new MiClase();  
+ $c->MiMetodo();  // este es un método de MiClase
+---
+En el apartado anterior se dijo que un método de una clase donde se usa
+un 'trait' tiene mayor precedencia que el método llamado del mismo modo
+de dicho 'trait'. Pero en el caso actual, un método de un 'trait'
+sobreescribe un método heredado.
+----
+Anteriormente se ha comentado que PHP, al igual que otros lenguajes,
+no implementaban la herencia múltiple debido a que no sabe resolver
+problemas de precedencia que se ocasionarían si se permitiese heredar
+de dos clases con métodos llamados igual. No sabe que método tiene que usar.
+
+Inicialmente con los 'traits' tenemos el mismo problema. Por ejemplo,
+vamos a llamar  a dos 'traits' que tienen funciones con el mismo nombre.
+
+El navegador devolverá el siguiente error: "Fatal error: Trait method
+hola1 has not been applied, because there are collisions with other
+trait methods on Ejemplo2 ...". Por lo tanto PHP sigue sin saber que
+método escoger. Pero como hemos, dicho los 'traits' están pensados para
+que poder realizar (simular) herencia múltiple. Por lo tanto hay una
+solución para resolver los posibles problemas de colisiones con la herencia
+múltiple. Y para ello simplemente indicaremos que método vamos a usar utilizando
+el operador insteadof.
+La sintaxis del operador es la siguiente:
+trait_método_preferencia :: nombre_método  insteadof  trait_método_no_preferencia
+
+class Ejemplo2 {  
+   use Base1,Base2 {  
+     Base1::hola1 insteadof Base2;  
+   }  
+ }  
+ $e = new Ejemplo2();  
+ echo $e->hola1('Ivan') . "<br/>"; 
+
+
+
+---------------------------------->Pregunta 6:
+
+Si en una clase padre hay una variable a y en el hijo tambien, cual sera la que tendra el hijo?
+
+
+Respuesta:
+
+https://diego.com.es/modificadores-y-herencia-de-clases-en-php
+
+<?php
+
+// Los métodos y propiedades heredados pueden ser sobreescritos 
+// declarándolos de nuevo con el mismo nombre que tienen en la 
+// clase padre
+
+class Perro {
+
+    public $nombre = "Rudolf";
+    public $propietario = "Pepe";
+
+    public function ladrar() {
+        print "Guau!";
+    }
+
+}
+
+class Bulldog extends Perro {
+
+    // Variable con el mismo nombre
+    public $propietario = "Juan";
+
+    public function ladrar() {
+        print "Woof!";
+    }
+
+}
+
+$cachorro = new Bulldog(); // Instancia de la clase hija
+$cachorro->nombre = "Jeffrey"; // Heredamos la propiedad padre $nombre y le asignamos Jeffrey
+echo $cachorro->nombre; // Devuelve Jeffrey
+echo "<br>";
+$cachorro->ladrar(); // Devuelve Woof! ya que ha sobreescrito la función padre ladrar().
+echo "<br>";
+echo $cachorro->propietario; // La variable tendra el valor de la hija porque
+// lo que hace es sobreescribir su valor
+?>
+
+
+
+---------------------------------->Pregunta 7:
+
+Diferencia entre pasar un parametro por valor y pasar un valor por referencia:
+
+
+Respuesta:
+
+Por defecto, los argumentos de las funciones son pasados por
+valor (así, si el valor del parámetro dentro de la función cambia,
+este no cambia fuera de la función).
+Para permitir a una función modificar sus argumentos, éstos
+deben pasarse por referencia.
+Para hacer que un argumento a una función sea siempre pasado
+por referencia hay que anteponer al nombre del argumento el
+signo 'et' (&) en la definición de la función.
+
+Ejemplo de pasar por valor:
+
+<?php
+ function resetCounter($c) {
+ $c = 0;
+ }
+ $counter=0;
+ $counter++;
+ $counter++;
+ $counter++;
+ echo "$counter<br/>"; //Muestra "3"
+ resetCounter($counter);
+ echo "$counter<br/>"; //Muestra "3"
+?>
+
+
+Ejemplo de pasar por referencia:
+
+<?php
+ function resetCounter(&$c) {
+ $c = 0;
+ }
+ $counter=0;
+ $counter++;
+ $counter++;
+ $counter++;
+ echo "$counter<br/>"; //Muestra "3"
+ resetCounter($counter);
+ echo "$counter<br/>"; //Muestra "0"
+?>
+
+
+Otro ejemplo de referencia:
+
+<?php
+$a=3;
+function bar(&$b) {
+ $b = 8;
+}
+$aref= & $a; // recibe la referencia de $a
+ $aref++; // $a vale 4
+bar($aref);
+echo 'El valor de $a es: ' . $a; //muestra 'El valor de $a es: 8'
+?>
+
+
+
+
+---------------------------------->Informacion: -----------------------------------------
 
 Tiempo tardado mirando php en w3schools
 
@@ -106,7 +352,7 @@ PHP Array --> 00:22:55
 PHP Superglobals --> 00:07:02
 
 
----------------------------------->Teoria:
+---------------------------------->Teoria: --------------------------------------------------
 
 Al poner esto hacemos que las variables sean estrictas y por lo tanto haya que definirlas:
 
@@ -121,4 +367,35 @@ Conversion de tipos: (int)$var --> lo transformas a un int
 En php.ini estan todas las directivas y te pone que hacen.
 En php.ini puedes editar el error_reporting E_ALL para que te enseñe todos los errores y display_errors on para activarlo
 La carpeta la puedes ver en xamp/php/ --> se supone que hay dos que son algo.ini
+
+
+
+---------------------> Contador con cookies:
+
+<?php
+if (isset($_COOKIE['visitas'])) {
+
+    setcookie('visitas', $_COOKIE['visitas'] + 1, time() + 60);
+    $mensaje = 'Numero de visitas: ' . $_COOKIE['visitas'];
+} else {
+
+    setcookie('visitas', 1, time() + 60);
+    $mensaje = 'Bienvenido por primera vez a nuesta web';
+}
+?>  
+<html>
+    <head>
+        <title>Cookie</title>
+    </head>
+    <body>
+        <p>
+            <?php echo $mensaje; ?>
+        </p>    
+    </body>
+</html> 
+
+
+---------------------> Agenda session:
+
+En htdocs hay una simple y otra mas completa
 
