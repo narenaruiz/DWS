@@ -30,9 +30,7 @@ include 'layout_head.php';
 			echo "</div>";
 		}
 
-		echo "<div class='alert alert-info'>";
-			echo "Contents of your admin section will be here.";
-		echo "</div>";
+		include_once "../index_oop.php";
 
 	echo "</div>";
 

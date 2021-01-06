@@ -1,8 +1,6 @@
-<!-- Login -->
-<!-- Apartado 8.1 -->
 <?php
 // core configuration
-include_once "config/core_login.php";
+include_once "config/core.php";
 
 // set page title
 $page_title = "Register";
@@ -20,10 +18,6 @@ include_once "layout_head.php";
 
 echo "<div class='col-md-12'>";
 
-// Apartado 8.3
-// registration form HTML
-//  Apartado 8.4
-// code when form was submitted
 // if form was posted
 if ($_POST) {
 
@@ -44,8 +38,6 @@ if ($_POST) {
         echo "The email you specified is already registered. Please try again or <a href='{$home_url}login'>login.</a>";
         echo "</div>";
     } else {
-        // Apartado 8.5
-        // create user
         // set values to object properties
         $user->firstname = $_POST['firstname'];
         $user->lastname = $_POST['lastname'];
@@ -53,31 +45,12 @@ if ($_POST) {
         $user->address = $_POST['address'];
         $user->password = $_POST['password'];
         $user->access_level = 'Customer';
-        // Apartado 11.1
-        // cambio lo de antes
-        //$user->status=1;
         $user->status = 0;
-        // Apartado 11.2
         // access code for email verification
         $access_code = $utils->getToken();
         $user->access_code = $access_code;
-        //----- Fin apartado 11.2
-        //---- Fin apartado 11.1 ----
-        // Apartado 11.6
-        // He tenido que cambiar todo esto por otra cosa
-        // create the user
-        /* if($user->create()){
 
-          echo "<div class='alert alert-info'>";
-          echo "Successfully registered. <a href='{$home_url}login'>Please login</a>.";
-          echo "</div>";
-
-          // empty posted values
-          $_POST=array();
-
-          }else{
-          echo "<div class='alert alert-danger' role='alert'>Unable to register. Please try again.</div>";
-          } */
+// create the user
         // create the user
         if ($user->create()) {
 
@@ -89,25 +62,33 @@ if ($_POST) {
 
             if ($utils->sendEmailViaPhpMail($send_to_email, $subject, $body)) {
                 echo "<div class='alert alert-success'>
-			Verification link was sent to your email. Click that link to login.
-		</div>";
+            Verification link was sent to your email. Click that link to login.
+        </div>";
             } else {
                 echo "<div class='alert alert-danger'>
-			User was created but unable to send verification email. Please contact admin.
-		</div>";
+            User was created but unable to send verification email. Please contact admin.
+        </div>";
             }
 
             // empty posted values
             $_POST = array();
+
+        } else {
+            echo "<div class='alert alert-danger' role='alert'>Unable to register. Please try again.</div>";
+        }if ($user->create()) {
+
+            echo "<div class='alert alert-info'>";
+            echo "Successfully registered. <a href='{$home_url}login'>Please login</a>.";
+            echo "</div>";
+
+            // empty posted values
+            $_POST = array();
+
         } else {
             echo "<div class='alert alert-danger' role='alert'>Unable to register. Please try again.</div>";
         }
-
-        //----- Fin apartado 11.6 -----
-        //----- Fin apartado 8.5 ------
     }
 }
-//-----Fin apartado 8.4 ------
 ?>
 <form action='register.php' method='post' id='register'>
 
@@ -155,7 +136,6 @@ if ($_POST) {
     </table>
 </form>
 <?php
-//---- Fin apartado 8.3 -----
 
 echo "</div>";
 

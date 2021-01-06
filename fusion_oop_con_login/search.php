@@ -1,6 +1,6 @@
 <?php
 // core.php holds pagination variables
-include_once 'config/core_oop.php';
+include_once 'config/core.php';
 
 // include database and object files
 include_once 'config/database_oop.php';

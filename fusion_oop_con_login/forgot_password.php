@@ -1,8 +1,6 @@
-<!-- Login -->
-<!-- Apartado 12.3 -->
 <?php
 // core configuration
-include_once "config/core_login.php";
+include_once "config/core.php";
 
 // set page title
 $page_title = "Forgot Password";
@@ -26,8 +24,6 @@ $utils = new Utils();
 // include page header HTML
 include_once "layout_head.php";
 
-// Apartado 12.5
-// post code
 // if the login form was submitted
 if ($_POST) {
 
@@ -52,50 +48,44 @@ if ($_POST) {
 
             if ($utils->sendEmailViaPhpMail($send_to_email, $subject, $body)) {
                 echo "<div class='alert alert-info'>
-							Password reset link was sent to your email.
-							Click that link to reset your password.
-						</div>";
+                            Password reset link was sent to your email.
+                            Click that link to reset your password.
+                        </div>";
             }
 
             // message if unable to send email for password reset link
-            else {
-                echo "<div class='alert alert-danger'>ERROR: Unable to send reset link.</div>";
-            }
+            else {echo "<div class='alert alert-danger'>ERROR: Unable to send reset link.</div>";}
         }
 
         // message if unable to update access code
-        else {
-            echo "<div class='alert alert-danger'>ERROR: Unable to update access code.</div>";
-        }
+        else {echo "<div class='alert alert-danger'>ERROR: Unable to update access code.</div>";}
+
     }
 
     // message if email does not exist
-    else {
-        echo "<div class='alert alert-danger'>Your email cannot be found.</div>";
-    }
+    else {echo "<div class='alert alert-danger'>Your email cannot be found.</div>";}
 
     echo "</div>";
 }
-//----- Fin apartado 12.5 ------
+
 // show reset password HTML form
 echo "<div class='col-md-4'></div>";
 echo "<div class='col-md-4'>";
 
 echo "<div class='account-wall'>
-		<div id='my-tab-content' class='tab-content'>
-			<div class='tab-pane active' id='login'>
-				<img class='profile-img' src='images/login-icon.png'>
-				<form class='form-signin' action='" . htmlspecialchars($_SERVER["PHP_SELF"]) . "' method='post'>
-					<input type='email' name='email' class='form-control' placeholder='Your email' required autofocus>
-					<input type='submit' class='btn btn-lg btn-primary btn-block' value='Send Reset Link' style='margin-top:1em;' />
-				</form>
-			</div>
-		</div>
-	</div>";
+        <div id='my-tab-content' class='tab-content'>
+            <div class='tab-pane active' id='login'>
+                <img class='profile-img' src='images/login-icon.png'>
+                <form class='form-signin' action='" . htmlspecialchars($_SERVER["PHP_SELF"]) . "' method='post'>
+                    <input type='email' name='email' class='form-control' placeholder='Your email' required autofocus>
+                    <input type='submit' class='btn btn-lg btn-primary btn-block' value='Send Reset Link' style='margin-top:1em;' />
+                </form>
+            </div>
+        </div>
+    </div>";
 
 echo "</div>";
 echo "<div class='col-md-4'></div>";
 
 // footer HTML and JavaScript codes
 include_once "layout_foot.php";
-?>
